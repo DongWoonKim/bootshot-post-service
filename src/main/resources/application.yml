@@ -4,3 +4,15 @@ server:
 spring:
   application:
     name: post-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      retries: 3        # ❗ 최대 재시도 횟수
+      retry-backoff: 1000 # ❗ 재시도 간 간격 (ms)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: post-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
