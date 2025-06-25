@@ -21,7 +21,7 @@ public class KafkaProducerService {
         try {
             log.info("Sending post created event to topic: {}, {}", TOPIC, event.toString());
             String message = objectMapper.writeValueAsString(event);
-            kafkaTemplate.send(TOPIC, event.postId(), message);
+            kafkaTemplate.send(TOPIC, event.aggregate_id(), message);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Kafka 직렬화 오류", e);
         }

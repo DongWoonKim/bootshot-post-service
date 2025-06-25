@@ -1,5 +1,6 @@
 package com.example.spring.postservice.controller;
 
+import com.example.spring.postservice.dto.CreatePostRequest;
 import com.example.spring.postservice.dto.PostCreatedEvent;
 import com.example.spring.postservice.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +23,15 @@ public class PostApiController {
     private final KafkaProducerService producerService;
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody Map<String, String> req) {
-        log.info("Received request to create post {}", req);
+    public ResponseEntity<Void> createPost(@RequestBody CreatePostRequest request) {
+        log.info("Received request to create post {}", request);
+        String generatedPostId = UUID.randomUUID().toString();
+
         PostCreatedEvent event = new PostCreatedEvent(
-                UUID.randomUUID().toString(),
-                req.get("title"),
-                req.get("content"),
-                req.get("authorId")
+                generatedPostId,
+                request.title(),
+                request.content(),
+                request.authorId()
         );
 
         producerService.sendPostCreatedEvent(event);

@@ -4,6 +4,21 @@ server:
 spring:
   application:
     name: post-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3307}/post?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${db.username}
+    password: ${db.password}
+    hikari:
+      connection-timeout: 2000
+      maximum-pool-size: 5
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3307}/post?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
   kafka:
     bootstrap-servers: localhost:9092
     producer:
